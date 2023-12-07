@@ -13,9 +13,7 @@ RUN pip install --trusted-host pypi.python.org Flask
 # Make port 9000 available to the world outside this container
 EXPOSE 9000
 
-# Define environment variable
-ENV NAME World
+#gunicorn: This is a popular WSGI (Web Server Gateway Interface) HTTP server for Python web applications. It's commonly used to serve web applications built using frameworks like Flask or Django.
 
-# Run app.py when the container launches
-CMD ["python", "app.py"]
-
+CMD ["gunicorn", "-b", "0.0.0.0:9000", "app:app"]
+                                                                                                                                                                              
