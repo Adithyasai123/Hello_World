@@ -1,13 +1,19 @@
+# Use an official Python runtime as a parent image
 FROM python:3.8-slim
 
+# Set the working directory to /app
 WORKDIR /app
 
+# Copy the current directory contents into the container at /app
 COPY . /app
 
-RUN pip install --no-cache-dir -r requirements.txt
+# Install any needed packages specified in requirements.txt
+RUN pip install --trusted-host pypi.python.org -r requirements.txt
 
-RUN pip install gunicorn
+# Create a non-root user
+RUN useradd -m myuser
+USER myuser
 
-EXPOSE 9000
+# Specify the command to run your Flask app with Gunicorn
+CMD ["gunicorn", "-b", "0.0.0.0:9000", "app.py:app"]
 
-CMD ["/usr/local/bin/gunicorn", "-b", "0.0.0.0:9000", "app.py:app"]
